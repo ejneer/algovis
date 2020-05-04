@@ -2,43 +2,37 @@
 using namespace Rcpp;
 
 void merge(NumericVector x, int left_idx, int mid_idx, int right_idx) {
-  int n1 = mid_idx - left_idx + 1;
-  int n2 = right_idx - mid_idx;
-  
-  NumericVector Left(n1);
-  NumericVector Right(n2);
-  
   // copy the elements to be sorted
-  for (int i = 0; i <= n1; i++) Left[i] = x[left_idx + i];
-  for (int i = 0; i <= n2; i++) Right[i] = x[mid_idx + 1 + i];
+  NumericVector Left = x[Range(left_idx, mid_idx)];
+  NumericVector Right = x[Range(mid_idx + 1, right_idx)];
   
-  int i = 0;
-  int j = 0;
-  int k = left_idx;
+  NumericVector::iterator left_iter = Left.begin();
+  NumericVector::iterator right_iter = Right.begin();
+  NumericVector::iterator subset_iter = x.begin() + left_idx;
   
-  while (i < n1 && j < n2) {
-    if (Left[i] <= Right[j]) {
-      x[k] = Left[i];
-      i++;
+  while (left_iter != Left.end() && right_iter != Right.end()) {
+    if (*left_iter < *right_iter) {
+      *subset_iter = *left_iter;
+      left_iter++;
     }
     else 
     {
-      x[k] = Right[j];
-      j++;
+      *subset_iter = *right_iter;  
+      right_iter++;
     }
-    k++;
+    subset_iter++;
   }
   
-  while (i < n1) {
-    x[k] = Left[i];
-    i++;
-    k++;
+  while (left_iter != Left.end()) {
+    *subset_iter = *left_iter;
+    left_iter++;
+    subset_iter++;
   }
   
-  while (j < n2) {
-    x[k] = Right[j];
-    j++;
-    k++;
+  while (right_iter != Right.end()) {
+    *subset_iter = *right_iter;
+    right_iter++;
+    subset_iter++;
   }
 }
 
