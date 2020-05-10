@@ -5,30 +5,32 @@
 
 using namespace Rcpp;
 
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _algovis_rcpp_hello_world() {
+// mergeSort
+NumericVector mergeSort(NumericVector x);
+RcppExport SEXP _algovis_mergeSort(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(mergeSort(x));
     return rcpp_result_gen;
 END_RCPP
 }
-// mergeSort
-void mergeSort(NumericVector x);
-RcppExport SEXP _algovis_mergeSort(SEXP xSEXP) {
+// mergeSortSnapshot
+DataFrame mergeSortSnapshot(NumericVector x);
+RcppExport SEXP _algovis_mergeSortSnapshot(SEXP xSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    mergeSort(x);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(mergeSortSnapshot(x));
+    return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_algovis_rcpp_hello_world", (DL_FUNC) &_algovis_rcpp_hello_world, 0},
     {"_algovis_mergeSort", (DL_FUNC) &_algovis_mergeSort, 1},
+    {"_algovis_mergeSortSnapshot", (DL_FUNC) &_algovis_mergeSortSnapshot, 1},
     {NULL, NULL, 0}
 };
 

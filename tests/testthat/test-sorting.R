@@ -13,7 +13,7 @@ test_that("sorting works", {
       3.237771
     )
   sorted_vector <- sort(test_vector)
-  test_vector <- mergeSort(test_vector, snapshot = FALSE)
+  test_vector <- mergeSort(test_vector)
   
   expect_equal(test_vector, sorted_vector)
 })
