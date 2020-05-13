@@ -24,7 +24,8 @@ public:
 
   std::string getIterationCount()
   {
-    return std::to_string(this->iterationCount);
+    std::string iterationString = "Iteration " + std::to_string(this->iterationCount);
+    return iterationString;
   }
 
   void mergeSort(int left_idx, int right_idx)
