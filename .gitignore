@@ -6,3 +6,6 @@ src/*.o
 src/*.so
 src/*.dll
 .vscode
+articles/*.md
+articles/*.gif
+articles/mergesort_files
