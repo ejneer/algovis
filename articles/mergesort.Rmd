@@ -1,6 +1,6 @@
 ---
 title: "Mergesort"
-output: github_document
+output: html_document
 ---
 
 ```{r, include=FALSE}
@@ -8,11 +8,54 @@ library(tidyverse)
 library(algovis)
 library(ggplot2)
 library(gganimate)
+library(DiagrammeR)
 ```
 
 ## Description
 Mergesort is a divide-and-conquer sorting technique, where a larger problem is recursively divided and solved at a finer granularity.
-The below animation depicts the mergesort algorithm applied to a 25 element numeric vector.
+There are two main subroutines involved:
+
+1. The `mergeSort` routine itself, where the recusive division happens.
+2. A `merge` routing, which is responsible for putting all of the divided pieces back together.
+
+<div align="center">
+```{r echo=FALSE, fig.align="center"}
+# TODO first level split of "SORTING" is confusing, "SOR" should be left of "TING"
+# use invisible edges? see https://stackoverflow.com/questions/44274518/how-can-i-control-within-level-node-order-in-graphvizs-dot/44274606
+grViz("
+digraph mergesort {
+  
+  OR2 [label='OR'];
+
+  subgraph cluster_divide {
+    label = 'Divide';
+    style = 'dotted';
+    SORTING -> {SOR TING}
+    SOR -> {S OR}
+    TING -> {TI NG}
+    OR -> {O R}
+    TI -> {T I}
+    NG -> {N G}
+  }
+
+  subgraph cluster_merge {
+    label = 'Conquer (Merge)';
+    labelloc = 'b';
+    style = 'dotted';
+    {O R} -> OR2
+    {S OR2} -> ORS
+    {T I} -> IT
+    {N G} -> GN
+    {IT GN} -> GINT
+    {ORS GINT} -> GINORST
+  }
+}
+")
+```
+<div>
+
+
+
 ```{r plot-mergesort, fig.align='center', message=FALSE, echo=FALSE}
 set.seed(0)
 test_vector <- runif(25) * 10
@@ -38,58 +81,3 @@ animate(anim, renderer = gifski_renderer(), fps = 5, end_pause = 5)
 Note how portions of the vector are sorted, which are subsequently sorted again as part of a larger sub-vector.
 The final sorting step occurs when the two halves of the vector are themselves sorted and merged.
 This illustrates the recursive nature of the algorithm.
-
-
-## Implementation
-
-```{cpp}
-void mergeSort(NumericVector data, int left_idx, int right_idx)
-{
-  if (left_idx < right_idx)
-  {
-    int mid_idx = (left_idx + right_idx) / 2;
-    mergeSort(data, left_idx, mid_idx);
-    mergeSort(data, mid_idx + 1, right_idx);
-    merge(data, left_idx, mid_idx, right_idx);
-  }
-}
-
-void merge(NumericVector data, int left_idx, int mid_idx, int right_idx)
-{
-  NumericVector Left = data[Range(left_idx, mid_idx)];
-  NumericVector Right = data[Range(mid_idx + 1, right_idx)];
-
-  NumericVector::iterator left_iter = Left.begin();
-  NumericVector::iterator right_iter = Right.begin();
-  NumericVector::iterator subset_iter = data.begin() + left_idx;
-
-  while (left_iter != Left.end() && right_iter != Right.end())
-  {
-    if (*left_iter < *right_iter)
-    {
-      *subset_iter = *left_iter;
-      left_iter++;
-    }
-    else
-    {
-      *subset_iter = *right_iter;
-      right_iter++;
-    }
-    subset_iter++;
-  }
-
-  while (left_iter != Left.end())
-  {
-    *subset_iter = *left_iter;
-    left_iter++;
-    subset_iter++;
-  }
-
-  while (right_iter != Right.end())
-  {
-    *subset_iter = *right_iter;
-    right_iter++;
-    subset_iter++;
-  }
-}
-```

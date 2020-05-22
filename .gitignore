@@ -8,4 +8,5 @@ src/*.dll
 .vscode
 articles/*.md
 articles/*.gif
+articles/*.html
 articles/mergesort_files
