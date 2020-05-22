@@ -20,39 +20,29 @@ There are two main subroutines involved:
 
 <div align="center">
 ```{r echo=FALSE, fig.align="center"}
-# TODO first level split of "SORTING" is confusing, "SOR" should be left of "TING"
-# use invisible edges? see https://stackoverflow.com/questions/44274518/how-can-i-control-within-level-node-order-in-graphvizs-dot/44274606
 grViz("
 digraph mergesort {
   
   OR2 [label='OR'];
 
-  subgraph cluster_divide {
-    label = 'Divide';
-    style = 'dotted';
-    SORTING -> {SOR TING}
-    SOR -> {S OR}
-    TING -> {TI NG}
-    OR -> {O R}
-    TI -> {T I}
-    NG -> {N G}
-  }
+  SORTING -> {SOR TING}
+  SOR -> {S OR}
+  TING -> {TI NG}
+  OR -> {O R}
+  TI -> {T I}
+  NG -> {N G}
 
-  subgraph cluster_merge {
-    label = 'Conquer (Merge)';
-    labelloc = 'b';
-    style = 'dotted';
-    {O R} -> OR2
-    {S OR2} -> ORS
-    {T I} -> IT
-    {N G} -> GN
-    {IT GN} -> GINT
-    {ORS GINT} -> GINORST
-  }
+  style = 'dotted';
+  {O R} -> OR2
+  {S OR2} -> ORS
+  {T I} -> IT
+  {N G} -> GN
+  {IT GN} -> GINT
+  {ORS GINT} -> GINORST
 }
 ")
 ```
-<div>
+</div>
 
 
 
