@@ -1,3 +1,0 @@
-useDynLib(algovis, .registration=TRUE)
-exportPattern("^[[:alpha:]]+")
-importFrom(Rcpp, evalCpp)
